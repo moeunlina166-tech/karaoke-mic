@@ -1,0 +1,58 @@
+name: Build iOS IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.x
+          cache: true
+
+      - name: Create Flutter iOS project
+        run: flutter create --platforms=ios --org com.karaokemic --project-name karaoke_mic app
+
+      - name: Copy our source files
+        run: |
+          cp main.dart app/lib/main.dart
+          cp AppDelegate.swift app/ios/Runner/AppDelegate.swift
+
+      - name: Generate iOS config (Podfile etc.)
+        working-directory: app
+        run: |
+          flutter pub get
+          flutter build ios --config-only --no-codesign
+
+      - name: Set iOS 15, mic permission, background audio
+        working-directory: app/ios
+        run: |
+          if [ -f Podfile ]; then
+            sed -i '' -E "s/^#? ?platform :ios.*/platform :ios, '15.0'/" Podfile
+          fi
+          sed -i '' -E 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]+;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' Runner.xcodeproj/project.pbxproj
+          /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string ត្រូវការមីក្រូហ្វូនសម្រាប់ច្រៀងខារ៉ាអូខេ" Runner/Info.plist
+          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes array" Runner/Info.plist
+          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes:0 string audio" Runner/Info.plist
+
+      - name: Build (no code signing)
+        working-directory: app
+        run: flutter build ios --release --no-codesign
+
+      - name: Package .ipa
+        run: |
+          mkdir Payload
+          cp -R app/build/ios/iphoneos/Runner.app Payload/
+          zip -qry KaraokeMic.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KaraokeMic-ipa
+          path: KaraokeMic.ipa
