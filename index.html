@@ -22,14 +22,16 @@ button:disabled{opacity:.5}
 label{display:block;margin:10px 0 2px;font-size:.9rem}
 label span{float:right;color:var(--muted)}
 input[type=range]{width:100%;accent-color:var(--accent)}
-input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit;margin-bottom:8px}
+input[type=text],select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit;margin-bottom:8px}
 .row{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:.9rem}
 .meter{height:10px;border-radius:6px;background:var(--border);overflow:hidden;margin-top:12px}
 .meter>div{height:100%;width:0;background:var(--meter);transition:width .06s}
 .warn{font-size:.85rem;color:var(--muted);line-height:1.5}
-#status{margin-top:8px;font-size:.9rem;color:var(--muted);text-align:center;min-height:1.2em}
+#status,#micinfo{margin-top:8px;font-size:.85rem;color:var(--muted);text-align:center;min-height:1.2em}
 .video{position:relative;width:100%;padding-top:56.25%;background:#000;border-radius:12px;overflow:hidden;margin-top:8px;display:none}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.big{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.big label{font-weight:600;font-size:1rem}
 details summary{cursor:pointer;font-weight:600}
 </style>
 </head>
@@ -38,9 +40,16 @@ details summary{cursor:pointer;font-weight:600}
 
 <div class="card">
   <button id="toggle">ចាប់ផ្តើមមីក</button>
-  <button id="mute" class="ghost" disabled>បិទសំឡេងមីកបណ្ដោះអាសន្ន</button>
+  <button id="mute" class="ghost" disabled>Mute Mic</button>
   <div class="meter"><div id="level"></div></div>
   <div id="status"></div>
+  <div id="micinfo"></div>
+
+  <div class="big">
+    <label for="voice">🎚 Voice Volume <span id="voiceV">100%</span></label>
+    <input type="range" id="voice" min="0" max="300" value="100">
+    <div class="warn">បង្កើនដើម្បីឲ្យសំឡេងអ្នកលើសភ្លេង បន្ថយដើម្បីឲ្យភ្លេងលើស។ កម្រិតសំឡេងភ្លេងត្រូវកែដោយប៊ូតុងសំឡេងរបស់ iPhone។</div>
+  </div>
 </div>
 
 <div class="card">
@@ -53,16 +62,32 @@ details summary{cursor:pointer;font-weight:600}
 </div>
 
 <div class="card">
-  <label for="vol">កម្រិតសំឡេងមីក <span id="volV">100%</span></label>
+  <label for="inputDev">Microphone Input</label>
+  <select id="inputDev"><option value="">Auto (Phone Mic)</option></select>
+  <div class="warn">ពេលភ្ជាប់ Bluetooth speaker កម្មវិធីព្យាយាមប្រើ <b>មីករបស់ទូរស័ព្ទ</b> ហើយបញ្ចេញសំឡេងទៅ speaker។ ដើម្បីប្តូរមីក ជ្រើសមួយ រួចចុច បញ្ឈប់ និង ចាប់ផ្តើមមីកម្តងទៀត។</div>
+
+  <label for="vol">Mic Gain <span id="volV">100%</span></label>
   <input type="range" id="vol" min="0" max="200" value="100">
   <label for="echo">Echo <span id="echoV">25%</span></label>
   <input type="range" id="echo" min="0" max="100" value="25">
-  <label for="echoTime">រយៈពេល Echo <span id="echoTimeV">250ms</span></label>
+  <label for="echoTime">Echo Delay <span id="echoTimeV">250ms</span></label>
   <input type="range" id="echoTime" min="50" max="600" value="250">
   <label for="reverb">Reverb <span id="reverbV">30%</span></label>
   <input type="range" id="reverb" min="0" max="100" value="30">
-  <div class="row"><input type="checkbox" id="ec"><label for="ec" style="margin:0">Echo cancellation (បើកតែពេលមិនប្រើកាស)</label></div>
-  <div class="row"><input type="checkbox" id="ns"><label for="ns" style="margin:0">កាត់សំឡេងរំខាន</label></div>
+  <div class="row"><input type="checkbox" id="ec"><label for="ec" style="margin:0">Echo Cancellation (បើកតែពេលមិនប្រើកាស)</label></div>
+  <div class="row"><input type="checkbox" id="ns"><label for="ns" style="margin:0">Noise Suppression</label></div>
+</div>
+
+<div class="card warn">
+  <details>
+    <summary>ហេតុអ្វីសំឡេងច្រៀងយឺតជាងភ្លេង? (Latency)</summary>
+    <p>សំឡេងរបស់អ្នកធ្វើដំណើរ៖ មីក → Safari → Bluetooth → speaker។ Bluetooth ធម្មតាមាន delay <b>100–300ms</b> ហើយ Safari ក៏បន្ថែមបន្តិចដែរ។ ភ្លេង YouTube ក៏ឆ្លងកាត់ Bluetooth ដែរ ប៉ុន្តែអ្នកច្រៀងតាមភ្លេងដែលឮ ដូច្នេះសំឡេងអ្នកតែងតែមកក្រោយបន្តិច។</p>
+    <p>ទំព័រគេហទំព័រមិនអាចពន្យារ ឬពន្លឿនសំឡេងរបស់ YouTube បានទេ ហើយក៏មិនអាចកាត់ delay របស់ Bluetooth បានដែរ។ វិធីដែលជួយបានពិតប្រាកដ៖</p>
+    <p>1) ភ្ជាប់ speaker/amplifier ដោយ <b>ខ្សែ</b> (3.5mm ឬ Lightning adapter) ជំនួស Bluetooth<br>
+       2) ប្រើ speaker Bluetooth ដែលមាន "Low latency / Game mode" ឬ Bluetooth 5.x<br>
+       3) ច្រៀងឲ្យលឿនជាងភ្លេងបន្តិច (ដូចអ្នកចាក់ស៊ីមក្រោយ)<br>
+       4) ប្រើកាសមានខ្សែសម្រាប់ស្តាប់ខ្លួនឯង</p>
+  </details>
 </div>
 
 <div class="card warn">
@@ -70,7 +95,6 @@ details summary{cursor:pointer;font-weight:600}
     <summary>ណែនាំសំខាន់សម្រាប់ iPhone</summary>
     <p>• ប្រើ <b>កាស</b> ឬដាក់ speaker ឲ្យឆ្ងាយពីទូរស័ព្ទ ដើម្បីកុំឲ្យមានសំឡេងហួច។</p>
     <p>• <b>កុំចាក់សោអេក្រង់ ឬចេញពីទំព័រនេះ</b> ព្រោះ iPhone នឹងបិទមីក។ ដាក់ Settings → Display &amp; Brightness → Auto-Lock ជា Never។</p>
-    <p>• សំឡេងក្នុង Safari មាន latency ខ្ពស់ជាងកម្មវិធីពិត។ Bluetooth ធ្វើឲ្យយឺតជាងទៀត។</p>
     <p>• ពេលបើកមីក iPhone អាចបន្ថយសំឡេងភ្លេង។ បើបែបនេះ សូមបង្កើនកម្រិតសំឡេងទូរស័ព្ទ។</p>
     <p>• វីដេអូខ្លះមិនអនុញ្ញាតឲ្យ embed ទេ ត្រូវជ្រើសវីដេអូផ្សេង។</p>
   </details>
@@ -82,6 +106,8 @@ details summary{cursor:pointer;font-weight:600}
   var ctx=null, stream=null, nodes={}, running=false, muted=false, raf=0, wake=null;
 
   function setStatus(t){ $('status').textContent = t || ''; }
+  function isBT(l){ return /bluetooth|airpods|beats|hands-?free|headset|buds|car/i.test(l||''); }
+  function isBuiltIn(l){ return /front|back|bottom|top|iphone|ipad|built-?in|internal|phone/i.test(l||'') && !isBT(l); }
 
   function makeImpulse(ac, seconds, decay){
     var rate = ac.sampleRate, len = Math.floor(rate*seconds);
@@ -93,6 +119,16 @@ details summary{cursor:pointer;font-weight:600}
     return buf;
   }
 
+  // soft limiter without added latency (inputs scaled by 1/3, so up to +-3 is handled)
+  function makeLimiter(ac){
+    var sh = ac.createWaveShaper();
+    var N = 2048, curve = new Float32Array(N);
+    for (var i=0;i<N;i++){ var u = i*2/(N-1) - 1; curve[i] = Math.tanh(3*u); }
+    sh.curve = curve;
+    sh.oversample = 'none';
+    return sh;
+  }
+
   function bindSliders(){
     function upd(id, fmt, fn){
       var el = $(id);
@@ -102,10 +138,38 @@ details summary{cursor:pointer;font-weight:600}
       };
       el.addEventListener('input', f); f();
     }
+    upd('voice', function(v){return v+'%'}, function(v){ nodes.voiceVol.gain.value = v/100; });
     upd('vol', function(v){return v+'%'}, function(v){ nodes.inGain.gain.value = v/100; });
     upd('echo', function(v){return v+'%'}, function(v){ nodes.echoGain.gain.value = v/100; });
     upd('echoTime', function(v){return v+'ms'}, function(v){ nodes.delay.delayTime.value = v/1000; });
     upd('reverb', function(v){return v+'%'}, function(v){ nodes.reverbGain.gain.value = v/100; });
+  }
+
+  async function openMic(deviceId){
+    var audio = {
+      echoCancellation: $('ec').checked,
+      noiseSuppression: $('ns').checked,
+      autoGainControl: false,
+      channelCount: 1
+    };
+    if (deviceId) audio.deviceId = { exact: deviceId };
+    return navigator.mediaDevices.getUserMedia({ audio: audio });
+  }
+
+  async function refreshInputs(){
+    var devs = [];
+    try{ devs = await navigator.mediaDevices.enumerateDevices(); }catch(e){}
+    var sel = $('inputDev'), cur = sel.value;
+    sel.innerHTML = '<option value="">Auto (Phone Mic)</option>';
+    var ins = devs.filter(function(d){ return d.kind === 'audioinput'; });
+    ins.forEach(function(d,i){
+      var o = document.createElement('option');
+      o.value = d.deviceId;
+      o.textContent = d.label || ('Mic ' + (i+1));
+      sel.appendChild(o);
+    });
+    sel.value = cur;
+    return ins;
   }
 
   async function start(){
@@ -119,15 +183,24 @@ details summary{cursor:pointer;font-weight:600}
     try { await ctx.resume(); } catch(e){}
 
     try{
-      stream = await navigator.mediaDevices.getUserMedia({ audio: {
-        echoCancellation: $('ec').checked,
-        noiseSuppression: $('ns').checked,
-        autoGainControl: false,
-        channelCount: 1
-      }});
+      stream = await openMic($('inputDev').value);
+      var ins = await refreshInputs();
+      // when a Bluetooth device is connected, make sure we use the phone's own mic
+      if (!$('inputDev').value){
+        var t = stream.getAudioTracks()[0];
+        if (t && isBT(t.label)){
+          var b = ins.filter(function(d){ return isBuiltIn(d.label); })[0];
+          if (b){
+            stream.getTracks().forEach(function(x){ x.stop(); });
+            stream = await openMic(b.deviceId);
+            $('inputDev').value = b.deviceId;
+          }
+        }
+      }
     }catch(e){
+      try{ if (stream) stream.getTracks().forEach(function(x){ x.stop(); }); }catch(_){}
       try{ ctx.close(); }catch(_){}
-      ctx = null;
+      ctx = null; stream = null;
       setStatus('មិនអាចប្រើមីកបាន៖ សូមអនុញ្ញាត (Allow) ក្នុង Safari។');
       return;
     }
@@ -141,8 +214,11 @@ details summary{cursor:pointer;font-weight:600}
     nodes.convolver = ctx.createConvolver();
     nodes.convolver.buffer = makeImpulse(ctx, 1.8, 2.5);
     nodes.reverbGain = ctx.createGain();
-    nodes.master = ctx.createGain();
-    nodes.comp = ctx.createDynamicsCompressor();
+    nodes.master = ctx.createGain();       // mute
+    nodes.voiceVol = ctx.createGain();     // voice volume slider
+    nodes.pre = ctx.createGain();
+    nodes.pre.gain.value = 1/3;
+    nodes.limiter = makeLimiter(ctx);
     nodes.analyser = ctx.createAnalyser();
     nodes.analyser.fftSize = 512;
     nodes.fb.gain.value = 0.35;
@@ -155,13 +231,20 @@ details summary{cursor:pointer;font-weight:600}
     nodes.delay.connect(nodes.echoGain); nodes.echoGain.connect(nodes.master);
     nodes.inGain.connect(nodes.convolver);
     nodes.convolver.connect(nodes.reverbGain); nodes.reverbGain.connect(nodes.master);
-    nodes.master.connect(nodes.comp);
-    nodes.comp.connect(ctx.destination);
+    nodes.master.connect(nodes.voiceVol);
+    nodes.voiceVol.connect(nodes.pre);
+    nodes.pre.connect(nodes.limiter);
+    nodes.limiter.connect(ctx.destination);
 
     running = true;
-    ['vol','echo','echoTime','reverb'].forEach(function(id){ $(id).dispatchEvent(new Event('input')); });
+    ['voice','vol','echo','echoTime','reverb'].forEach(function(id){ $(id).dispatchEvent(new Event('input')); });
 
     try{ if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); }catch(e){}
+
+    var label = (stream.getAudioTracks()[0] || {}).label || '';
+    var lat = (ctx.baseLatency || 0) + (ctx.outputLatency || 0);
+    $('micinfo').textContent = 'មីក៖ ' + (label || 'មិនស្គាល់') +
+      (lat > 0 ? ' · App latency ≈ ' + Math.round(lat*1000) + 'ms (មិនរួម Bluetooth)' : '');
 
     $('toggle').textContent = 'បញ្ឈប់មីក';
     $('toggle').classList.add('stop');
@@ -192,8 +275,9 @@ details summary{cursor:pointer;font-weight:600}
     $('toggle').textContent = 'ចាប់ផ្តើមមីក';
     $('toggle').classList.remove('stop');
     $('mute').disabled = true;
-    $('mute').textContent = 'បិទសំឡេងមីកបណ្ដោះអាសន្ន';
+    $('mute').textContent = 'Mute Mic';
     $('level').style.width = '0';
+    $('micinfo').textContent = '';
     setStatus('');
   }
 
@@ -202,7 +286,10 @@ details summary{cursor:pointer;font-weight:600}
     if (!running) return;
     muted = !muted;
     nodes.master.gain.value = muted ? 0 : 1;
-    $('mute').textContent = muted ? 'បើកសំឡេងមីកវិញ' : 'បិទសំឡេងមីកបណ្ដោះអាសន្ន';
+    $('mute').textContent = muted ? 'Unmute Mic' : 'Mute Mic';
+  });
+  $('inputDev').addEventListener('change', function(){
+    if (running) setStatus('ចុច "បញ្ឈប់មីក" រួចចុច "ចាប់ផ្តើមមីក" ម្តងទៀត ដើម្បីប្រើមីកថ្មី។');
   });
 
   // iOS can suspend audio when the page is hidden: try to resume on return
