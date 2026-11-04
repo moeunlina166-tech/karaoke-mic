@@ -99,27 +99,47 @@ details summary{cursor:pointer;font-weight:600}
 </div>
 
 <div class="card">
-  <label for="inputDev">Microphone Input</label>
-  <select id="inputDev"><option value="">Auto (Phone Mic)</option></select>
-  <div class="warn">ពេលភ្ជាប់ Bluetooth speaker កម្មវិធីព្យាយាមប្រើ <b>មីករបស់ទូរស័ព្ទ</b> ហើយបញ្ចេញសំឡេងទៅ speaker។ ដើម្បីប្តូរមីក ជ្រើសមួយ រួចចុច បញ្ឈប់ និង ចាប់ផ្តើមមីកម្តងទៀត។</div>
+  <div class="warn">🎤 ប្រើតែ <b>មីកក្នុងទូរស័ព្ទ</b> មួយប៉ុណ្ណោះ (មិនប្រើមីកកាស ឬ Bluetooth headset)។</div>
 
   <label for="vol">Mic Gain <span id="volV">100%</span></label>
   <input type="range" id="vol" min="0" max="200" value="100">
+  <div class="row"><input type="checkbox" id="gateAuto" checked><label for="gateAuto" style="margin:0">Auto Noise Gate (បិទមីកពេលអ្នកស្ងៀម កុំឲ្យភ្លេងពី speaker ចូលវិញ)</label></div>
+  <div class="warn" id="gateState" style="margin:4px 0 0"></div>
+  <details style="margin-top:8px">
+    <summary class="warn">Manual Gate (កំណត់ដោយដៃ)</summary>
+    <label for="gate">Manual Gate <span id="gateV">Off</span></label>
+    <input type="range" id="gate" min="0" max="100" value="0">
+    <button id="calib" class="ghost" disabled>🎯 Calibrate (ចាក់ភ្លេង ស្ងៀម 2 វិនាទី)</button>
+    <div class="warn" id="gateMsg">ចុចប៊ូតុងនេះនឹងប្តូរទៅ Manual Gate ដោយស្វ័យប្រវត្តិ។</div>
+  </details>
   <label for="echo">Echo <span id="echoV">25%</span></label>
   <input type="range" id="echo" min="0" max="100" value="25">
   <label for="echoTime">Echo Delay <span id="echoTimeV">250ms</span></label>
   <input type="range" id="echoTime" min="50" max="600" value="250">
   <label for="reverb">Reverb <span id="reverbV">30%</span></label>
   <input type="range" id="reverb" min="0" max="100" value="30">
-  <div class="row"><input type="checkbox" id="ec"><label for="ec" style="margin:0">Echo Cancellation (បើកតែពេលមិនប្រើកាស)</label></div>
-  <div class="row"><input type="checkbox" id="ns"><label for="ns" style="margin:0">Noise Suppression</label></div>
+  <div class="row"><input type="checkbox" id="ec" checked><label for="ec" style="margin:0">Echo Cancellation (កាត់សំឡេង speaker មិនឲ្យចូលមីក)</label></div>
+  <div class="row"><input type="checkbox" id="ns" checked><label for="ns" style="margin:0">Noise Suppression</label></div>
+  <div class="warn">បើភ្លេងស្ងាត់ពេក ឬសំឡេងប្តូរមកចេញពីទូរស័ព្ទជំនួស Bluetooth សូមបិទ Echo Cancellation រួចចុច បញ្ឈប់/ចាប់ផ្តើមមីកម្តងទៀត។</div>
+</div>
+
+<div class="card warn">
+  <details>
+    <summary>សំឡេងពី speaker ចូលមីកវិញ (feedback / ឮភ្លេងពីរដង)</summary>
+    <p>មីករបស់ទូរស័ព្ទចាប់បានអ្វីៗដែល speaker បញ្ចេញ (ភ្លេង និងសំឡេងអ្នក) ហើយបញ្ជូនចេញម្តងទៀត។ នេះជាបញ្ហាធម្មតានៃការប្រើមីកទូរស័ព្ទក្បែរ speaker។ សាកល្បងតាមលំដាប់៖</p>
+    <p>1) ដាក់ speaker ឲ្យឆ្ងាយពីទូរស័ព្ទ (យ៉ាងតិច 2–3 ម៉ែត្រ) ហើយងាកចេញពីមីក។ ដាក់ទូរស័ព្ទជិតមាត់ (5–10 សង់ទីម៉ែត្រ)។</p>
+    <p>2) បន្ថយ volume របស់ speaker ហើយបន្ថយ <b>Mic Gain</b>, <b>Echo</b>, <b>Reverb</b> និង <b>Voice Volume</b>។</p>
+    <p>3) ចុច <b>🎯 Auto Calibrate Gate</b> ពេលភ្លេងកំពុងចាក់ ហើយអ្នកស្ងៀម។ Noise Gate នឹងបិទមីកពេលអ្នកមិនច្រៀង ដូច្នេះភ្លេងពី speaker មិនត្រូវបញ្ជូនចេញម្តងទៀត។</p>
+    <p>4) សាកល្បងបើក <b>Echo Cancellation</b> (រួចចុច បញ្ឈប់ និង ចាប់ផ្តើមមីកម្តងទៀត)។ វាអាចបន្ថយសំឡេងភ្លេង ឬប្តូរផ្លូវសំឡេងលើ iPhone ដូច្នេះត្រូវសាកល្បងមើល។ Bluetooth delay ក៏ធ្វើឲ្យវាកាត់បានមិនល្អដែរ។</p>
+    <p>5) វិធីល្អបំផុត៖ ពាក់<b>កាស</b> ដើម្បីស្តាប់ភ្លេង ឬប្រើមីកមានខ្សែ។</p>
+  </details>
 </div>
 
 <div class="card warn">
   <details>
     <summary>ឲ្យភ្លេង + សំឡេងច្រៀងចេញ Bluetooth ហើយប្រើមីកទូរស័ព្ទ</summary>
     <p>1) ភ្ជាប់ Bluetooth speaker ក្នុង <b>Settings → Bluetooth</b> មុន។</p>
-    <p>2) ចុច <b>ចាប់ផ្តើមមីក</b> → Allow។ ក្រោមប៊ូតុងត្រូវបង្ហាញ <b>មីក៖ iPhone Microphone</b> (ឬស្រដៀងគ្នា)។ បើបង្ហាញមីក Bluetooth ជ្រើសមីកទូរស័ព្ទក្នុង <b>Microphone Input</b> រួចចុច បញ្ឈប់/ចាប់ផ្តើមម្តងទៀត។</p>
+    <p>2) ចុច <b>ចាប់ផ្តើមមីក</b> → Allow។ ក្រោមប៊ូតុងត្រូវបង្ហាញ <b>មីក៖ iPhone Microphone</b> (ឬស្រដៀងគ្នា)។ បើបង្ហាញមីក Bluetooth ផ្តាច់កាស/Bluetooth headset រួចចុច បញ្ឈប់/ចាប់ផ្តើមម្តងទៀត។</p>
     <p>3) ចុច <b>Test Sound</b> ហើយស្តាប់ថា "ប៊ីប" ចេញពី Bluetooth speaker ឬអត់។ សំឡេងភ្លេង YouTube និងសំឡេងច្រៀងប្រើផ្លូវដូចគ្នា។</p>
     <p>4) បើសំឡេងចេញពីទូរស័ព្ទ៖ អូសពីគែមក្រោមឡើងលើ (Control Center) → ចុចសង្កត់កាតតន្ត្រី → ចុចរូប <b>AirPlay</b> → ជ្រើស Bluetooth speaker។</p>
     <p>5) បើនៅតែមិនបាន មានន័យថា Safari លើ iPhone នេះមិនអនុញ្ញាតឲ្យប្រើមីកទូរស័ព្ទ ព្រមទាំង Bluetooth speaker ក្នុងពេលតែមួយ។ គេហទំព័រមិនអាចជ្រើស speaker ឬបង្ខំផ្លូវសំឡេងបានទេ។ ដំណោះស្រាយគឺខ្សែ (3.5mm / Lightning adapter) ឬកម្មវិធីពិត។</p>
@@ -152,15 +172,16 @@ details summary{cursor:pointer;font-weight:600}
 (function(){
   var $ = function(id){return document.getElementById(id)};
   var ctx=null, stream=null, nodes={}, running=false, muted=false, raf=0, wake=null;
+  var gateThr = 0, gateOpen = true, calib = null, lastGateState = '', gateAuto = true, gateLearned = false, gateFloor = 1;
 
   function setStatus(t){ $('status').textContent = t || ''; }
   function setMuteUI(){
     var t = muted ? 'Unmute Mic' : 'Mute Mic';
     $('mute').textContent = t; $('fsMute').textContent = t;
-    $('mute').disabled = !running; $('fsMute').disabled = !running;
+    $('mute').disabled = !running; $('fsMute').disabled = !running; $('calib').disabled = !running;
   }
-  function isBT(l){ return /bluetooth|airpods|beats|hands-?free|headset|buds|car/i.test(l||''); }
-  function isBuiltIn(l){ return /front|back|bottom|top|iphone|ipad|built-?in|internal|phone/i.test(l||'') && !isBT(l); }
+  function isBT(l){ return /bluetooth|airpods|beats|hands-?free|headset|headphone|earphone|earbud|buds|carplay/i.test(l||''); }
+  function isBuiltIn(l){ return /iphone|ipad|built-?in|internal|front|back|bottom|top/i.test(l||'') && !isBT(l); }
 
   function makeImpulse(ac, seconds, decay){
     var rate = ac.sampleRate, len = Math.floor(rate*seconds);
@@ -182,6 +203,61 @@ details summary{cursor:pointer;font-weight:600}
     return sh;
   }
 
+  // ---- Noise Gate: silences the mic while you are not singing, so the music coming
+  // from the speaker (picked up by the phone mic) is not sent out again ----
+  function sliderToThr(v){ return v <= 0 ? 0 : Math.pow(10, (-70 + v*0.5) / 20); }
+  function thrToSlider(t){ return Math.round(Math.min(100, Math.max(1, (20*Math.log10(t) + 70) / 0.5))); }
+  function makeGate(ac){
+    var sr = ac.sampleRate, N = 256;
+    var p = ac.createScriptProcessor(N, 1, 1);
+    var g = 1, hold = 0, started = 0;
+    var atk = 1 - Math.exp(-1/(0.004*sr)), rel = 1 - Math.exp(-1/(0.15*sr));
+    var holdBlocks = Math.ceil(0.2*sr/N);
+    // Auto mode: learn the "background" level (music bleeding in from the speaker) as the
+    // quietest 100 ms average over the last 4 seconds. The gate opens only above ~2.2x that.
+    var B = 40, bucketBlocks = Math.ceil(0.1*sr/N);
+    var buckets = new Float32Array(B).fill(1), bpos = 0, bsum = 0, bcnt = 0, filled = 0;
+    p.onaudioprocess = function(e){
+      var inp = e.inputBuffer.getChannelData(0), out = e.outputBuffer.getChannelData(0);
+      var n = inp.length, sum = 0, i;
+      for (i=0;i<n;i++) sum += inp[i]*inp[i];
+      var rms = Math.sqrt(sum/n);
+      if (calib && rms > calib.max) calib.max = rms;
+      var target = 1;
+      if (gateAuto){
+        started++;
+        if (started > 30){               // skip start-up silence
+          bsum += rms; bcnt++;
+          if (bcnt >= bucketBlocks){
+            buckets[bpos] = bsum / bcnt; bpos = (bpos + 1) % B;
+            bsum = 0; bcnt = 0; if (filled < B) filled++;
+            var m = 1; for (var k=0;k<B;k++) if (buckets[k] < m) m = buckets[k];
+            gateFloor = m;
+            if (filled >= 10) gateLearned = true;
+          }
+        }
+        if (!gateLearned){ gateOpen = true; }
+        else {
+          var thr = Math.min(0.04, Math.max(0.0015, gateFloor * 2.2));
+          if (rms > thr){ gateOpen = true; hold = holdBlocks; }
+          else if (hold > 0){ hold--; }
+          else { gateOpen = false; }
+        }
+        target = gateOpen ? 1 : 0;
+      } else if (gateThr > 0){
+        if (rms > gateThr){ gateOpen = true; hold = holdBlocks; }
+        else if (hold > 0){ hold--; }
+        else { gateOpen = false; }
+        target = gateOpen ? 1 : 0;
+      } else { gateOpen = true; }
+      for (i=0;i<n;i++){
+        g += (target - g) * (target > g ? atk : rel);
+        out[i] = inp[i] * g;
+      }
+    };
+    return p;
+  }
+
   function bindSliders(){
     function upd(id, fmt, fn){
       var el = $(id);
@@ -196,6 +272,7 @@ details summary{cursor:pointer;font-weight:600}
     upd('echo', function(v){return v+'%'}, function(v){ nodes.echoGain.gain.value = v/100; });
     upd('echoTime', function(v){return v+'ms'}, function(v){ nodes.delay.delayTime.value = v/1000; });
     upd('reverb', function(v){return v+'%'}, function(v){ nodes.reverbGain.gain.value = v/100; });
+    upd('gate', function(v){return v == 0 ? 'Off' : v+'%'}, function(v){ gateThr = sliderToThr(v); });
   }
 
   async function openMic(deviceId){
@@ -209,20 +286,11 @@ details summary{cursor:pointer;font-weight:600}
     return navigator.mediaDevices.getUserMedia({ audio: audio });
   }
 
-  async function refreshInputs(){
-    var devs = [];
-    try{ devs = await navigator.mediaDevices.enumerateDevices(); }catch(e){}
-    var sel = $('inputDev'), cur = sel.value;
-    sel.innerHTML = '<option value="">Auto (Phone Mic)</option>';
-    var ins = devs.filter(function(d){ return d.kind === 'audioinput'; });
-    ins.forEach(function(d,i){
-      var o = document.createElement('option');
-      o.value = d.deviceId;
-      o.textContent = d.label || ('Mic ' + (i+1));
-      sel.appendChild(o);
-    });
-    sel.value = cur;
-    return ins;
+  async function listInputs(){
+    try{
+      var devs = await navigator.mediaDevices.enumerateDevices();
+      return devs.filter(function(d){ return d.kind === 'audioinput'; });
+    }catch(e){ return []; }
   }
 
   async function start(){
@@ -236,21 +304,18 @@ details summary{cursor:pointer;font-weight:600}
     try { await ctx.resume(); } catch(e){}
 
     try{
-      stream = await openMic($('inputDev').value);
-      var ins = await refreshInputs();
-      // Auto mode: always prefer the phone's own built-in mic (never the Bluetooth mic)
-      if (!$('inputDev').value){
-        var t = stream.getAudioTracks()[0];
-        var curId = (t && t.getSettings) ? (t.getSettings().deviceId || '') : '';
-        var b = ins.filter(function(d){ return isBuiltIn(d.label) && d.deviceId; })[0];
-        if (b && b.deviceId !== curId){
-          try{
-            var s2 = await openMic(b.deviceId);
-            stream.getTracks().forEach(function(x){ x.stop(); });
-            stream = s2;
-            $('inputDev').value = b.deviceId;
-          }catch(_){}
-        }
+      stream = await openMic('');
+      var ins = await listInputs();
+      // always use the phone's own built-in mic (never the headphone / Bluetooth mic)
+      var t = stream.getAudioTracks()[0];
+      var curId = (t && t.getSettings) ? (t.getSettings().deviceId || '') : '';
+      var b = ins.filter(function(d){ return isBuiltIn(d.label) && d.deviceId; })[0];
+      if (b && b.deviceId !== curId){
+        try{
+          var s2 = await openMic(b.deviceId);
+          stream.getTracks().forEach(function(x){ x.stop(); });
+          stream = s2;
+        }catch(_){}
       }
     }catch(e){
       try{ if (stream) stream.getTracks().forEach(function(x){ x.stop(); }); }catch(_){}
@@ -260,6 +325,16 @@ details summary{cursor:pointer;font-weight:600}
       return;
     }
 
+    var lbl0 = ((stream.getAudioTracks()[0] || {}).label) || '';
+    if (isBT(lbl0)){
+      stream.getTracks().forEach(function(x){ x.stop(); });
+      try{ ctx.close(); }catch(_){}
+      ctx = null; stream = null;
+      setStatus('រកមិនឃើញមីកក្នុងទូរស័ព្ទ (កំពុងប្រើមីក "' + lbl0 + '")។ សូមផ្តាច់កាស/Bluetooth headset រួចសាកល្បងម្តងទៀត។');
+      return;
+    }
+
+    gateAuto = $('gateAuto').checked; gateLearned = false; gateFloor = 1;
     var src = ctx.createMediaStreamSource(stream);
     nodes.inGain = ctx.createGain();
     nodes.dry = ctx.createGain();
@@ -276,15 +351,20 @@ details summary{cursor:pointer;font-weight:600}
     nodes.limiter = makeLimiter(ctx);
     nodes.analyser = ctx.createAnalyser();
     nodes.analyser.fftSize = 512;
+    nodes.hp = ctx.createBiquadFilter();       // cuts low rumble / boomy feedback
+    nodes.hp.type = 'highpass';
+    nodes.hp.frequency.value = 100;
+    nodes.gate = makeGate(ctx);
     nodes.fb.gain.value = 0.35;
 
     src.connect(nodes.inGain);
     nodes.inGain.connect(nodes.analyser);
-    nodes.inGain.connect(nodes.dry); nodes.dry.connect(nodes.master);
-    nodes.inGain.connect(nodes.delay);
+    nodes.inGain.connect(nodes.hp); nodes.hp.connect(nodes.gate);
+    nodes.gate.connect(nodes.dry); nodes.dry.connect(nodes.master);
+    nodes.gate.connect(nodes.delay);
     nodes.delay.connect(nodes.fb); nodes.fb.connect(nodes.delay);
     nodes.delay.connect(nodes.echoGain); nodes.echoGain.connect(nodes.master);
-    nodes.inGain.connect(nodes.convolver);
+    nodes.gate.connect(nodes.convolver);
     nodes.convolver.connect(nodes.reverbGain); nodes.reverbGain.connect(nodes.master);
     nodes.master.connect(nodes.voiceVol);
     nodes.voiceVol.connect(nodes.pre);
@@ -292,13 +372,13 @@ details summary{cursor:pointer;font-weight:600}
     nodes.limiter.connect(ctx.destination);
 
     running = true;
-    ['voice','vol','echo','echoTime','reverb'].forEach(function(id){ $(id).dispatchEvent(new Event('input')); });
+    ['voice','vol','gate','echo','echoTime','reverb'].forEach(function(id){ $(id).dispatchEvent(new Event('input')); });
 
     try{ if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); }catch(e){}
 
     var label = (stream.getAudioTracks()[0] || {}).label || '';
     var lat = (ctx.baseLatency || 0) + (ctx.outputLatency || 0);
-    $('micinfo').textContent = 'មីក៖ ' + (label || 'មិនស្គាល់') + (isBT(label) ? ' ⚠ មីក Bluetooth (សូមជ្រើស iPhone Microphone ក្នុង Microphone Input)' : '') +
+    $('micinfo').textContent = 'មីក៖ ' + (label || 'មិនស្គាល់') + '' +
       (lat > 0 ? ' · App latency ≈ ' + Math.round(lat*1000) + 'ms (មិនរួម Bluetooth)' : '');
 
     $('toggle').textContent = 'បញ្ឈប់មីក';
@@ -316,6 +396,8 @@ details summary{cursor:pointer;font-weight:600}
       var peak = 0;
       for (var i=0;i<buf.length;i++){ var v = Math.abs(buf[i]-128)/128; if (v>peak) peak=v; }
       $('level').style.width = Math.min(100, peak*140) + '%';
+      var gs = gateAuto ? (!gateLearned ? '… Gate កំពុងរៀនកម្រិតសំឡេង (ស្ងៀមបន្តិច)' : (gateOpen ? '● Gate OPEN (ឮសំឡេងអ្នក)' : '○ Gate CLOSED (ស្ងៀម)')) : (gateThr > 0 ? (gateOpen ? '● Gate OPEN (Manual)' : '○ Gate CLOSED (Manual)') : '');
+      if (gs !== lastGateState){ lastGateState = gs; $('gateState').textContent = gs; }
       raf = requestAnimationFrame(loop);
     }
     loop();
@@ -326,7 +408,9 @@ details summary{cursor:pointer;font-weight:600}
     try{ if (stream) stream.getTracks().forEach(function(t){t.stop()}); }catch(e){}
     try{ if (ctx) ctx.close(); }catch(e){}
     try{ if (wake) wake.release(); }catch(e){}
+    try{ if (nodes.gate) nodes.gate.onaudioprocess = null; }catch(e){}
     ctx = null; stream = null; nodes = {}; wake = null; muted = false;
+    gateOpen = true; calib = null; lastGateState = ''; $('gateState').textContent = '';
     $('toggle').textContent = 'ចាប់ផ្តើមមីក';
     $('toggle').classList.remove('stop');
     setMuteUI();
@@ -350,6 +434,34 @@ details summary{cursor:pointer;font-weight:600}
     $('voice').value = $('voice2').value;
     $('voice').dispatchEvent(new Event('input'));
   });
+  $('gateAuto').addEventListener('change', function(){
+    gateAuto = $('gateAuto').checked;
+    if (gateAuto){ gateLearned = false; gateFloor = 1; }
+  });
+  $('gate').addEventListener('input', function(){
+    if ($('gate').value > 0 && $('gateAuto').checked){ $('gateAuto').checked = false; gateAuto = false; }
+  });
+  $('calib').addEventListener('click', function(){
+    if (!running) return;
+    $('gateMsg').textContent = 'កំពុងវាស់… សូមស្ងៀម 2 វិនាទី (ភ្លេងត្រូវកំពុងចាក់)';
+    calib = { max: 0 };
+    setTimeout(function(){
+      var m = calib ? calib.max : 0;
+      calib = null;
+      if (m <= 0){ $('gateMsg').textContent = 'មិនឮសំឡេងពីមីកសោះ។ សូមពិនិត្យមីក ហើយសាកល្បងម្តងទៀត។'; return; }
+      var v = thrToSlider(m * 1.8);
+      $('gateAuto').checked = false; gateAuto = false;
+      $('gate').value = v;
+      $('gate').dispatchEvent(new Event('input'));
+      $('gateMsg').textContent = 'Manual Gate ' + v + '% (ប្តូរពី Auto)។ បើវាកាត់សំឡេងអ្នកចោល សូមបន្ថយស្លាយបន្តិច។ ត្រូវ Calibrate ម្តងទៀតពេលប្តូរ Mic Gain។';
+    }, 2000);
+  });
+  ['ec','ns'].forEach(function(id){
+    $(id).addEventListener('change', function(){
+      if (running) setStatus('ចុច "បញ្ឈប់មីក" រួចចុច "ចាប់ផ្តើមមីក" ម្តងទៀត ដើម្បីប្រើការកំណត់ថ្មី។');
+    });
+  });
+
   // Test Sound: short beep through Web Audio, to hear which speaker the web page uses
   $('beep').addEventListener('click', function(){
     var AC = window.AudioContext || window.webkitAudioContext;
@@ -366,10 +478,6 @@ details summary{cursor:pointer;font-weight:600}
     o.start(t); o.stop(t + 1);
     if (temp) setTimeout(function(){ try{ ac.close(); }catch(e){} }, 1300);
     setStatus('ឮសំឡេង "ប៊ីប" ចេញពី Bluetooth speaker ឬអត់?');
-  });
-
-  $('inputDev').addEventListener('change', function(){
-    if (running) setStatus('ចុច "បញ្ឈប់មីក" រួចចុច "ចាប់ផ្តើមមីក" ម្តងទៀត ដើម្បីប្រើមីកថ្មី។');
   });
 
   // iOS can suspend audio when the page is hidden: try to resume on return
