@@ -53,11 +53,12 @@ details summary{cursor:pointer;font-weight:600}
 </style>
 </head>
 <body>
-<h1>🎤 Karaoke ចល័ត</h1>
+<h1>🎤 Karaoke Mic</h1>
 
 <div class="card">
-  <button id="toggle">ចាប់ផ្តើម</button>
+  <button id="toggle">ចាប់ផ្តើមមីក</button>
   <button id="mute" class="ghost" disabled>Mute Mic</button>
+  <button id="beep" class="ghost">🔊 Test Sound (ពិនិត្យថាសំឡេងចេញពី speaker ណា)</button>
   <div class="meter"><div id="level"></div></div>
   <div id="status"></div>
   <div id="micinfo"></div>
@@ -112,6 +113,17 @@ details summary{cursor:pointer;font-weight:600}
   <input type="range" id="reverb" min="0" max="100" value="30">
   <div class="row"><input type="checkbox" id="ec"><label for="ec" style="margin:0">Echo Cancellation (បើកតែពេលមិនប្រើកាស)</label></div>
   <div class="row"><input type="checkbox" id="ns"><label for="ns" style="margin:0">Noise Suppression</label></div>
+</div>
+
+<div class="card warn">
+  <details>
+    <summary>ឲ្យភ្លេង + សំឡេងច្រៀងចេញ Bluetooth ហើយប្រើមីកទូរស័ព្ទ</summary>
+    <p>1) ភ្ជាប់ Bluetooth speaker ក្នុង <b>Settings → Bluetooth</b> មុន។</p>
+    <p>2) ចុច <b>ចាប់ផ្តើមមីក</b> → Allow។ ក្រោមប៊ូតុងត្រូវបង្ហាញ <b>មីក៖ iPhone Microphone</b> (ឬស្រដៀងគ្នា)។ បើបង្ហាញមីក Bluetooth ជ្រើសមីកទូរស័ព្ទក្នុង <b>Microphone Input</b> រួចចុច បញ្ឈប់/ចាប់ផ្តើមម្តងទៀត។</p>
+    <p>3) ចុច <b>Test Sound</b> ហើយស្តាប់ថា "ប៊ីប" ចេញពី Bluetooth speaker ឬអត់។ សំឡេងភ្លេង YouTube និងសំឡេងច្រៀងប្រើផ្លូវដូចគ្នា។</p>
+    <p>4) បើសំឡេងចេញពីទូរស័ព្ទ៖ អូសពីគែមក្រោមឡើងលើ (Control Center) → ចុចសង្កត់កាតតន្ត្រី → ចុចរូប <b>AirPlay</b> → ជ្រើស Bluetooth speaker។</p>
+    <p>5) បើនៅតែមិនបាន មានន័យថា Safari លើ iPhone នេះមិនអនុញ្ញាតឲ្យប្រើមីកទូរស័ព្ទ ព្រមទាំង Bluetooth speaker ក្នុងពេលតែមួយ។ គេហទំព័រមិនអាចជ្រើស speaker ឬបង្ខំផ្លូវសំឡេងបានទេ។ ដំណោះស្រាយគឺខ្សែ (3.5mm / Lightning adapter) ឬកម្មវិធីពិត។</p>
+  </details>
 </div>
 
 <div class="card warn">
@@ -226,16 +238,18 @@ details summary{cursor:pointer;font-weight:600}
     try{
       stream = await openMic($('inputDev').value);
       var ins = await refreshInputs();
-      // when a Bluetooth device is connected, make sure we use the phone's own mic
+      // Auto mode: always prefer the phone's own built-in mic (never the Bluetooth mic)
       if (!$('inputDev').value){
         var t = stream.getAudioTracks()[0];
-        if (t && isBT(t.label)){
-          var b = ins.filter(function(d){ return isBuiltIn(d.label); })[0];
-          if (b){
+        var curId = (t && t.getSettings) ? (t.getSettings().deviceId || '') : '';
+        var b = ins.filter(function(d){ return isBuiltIn(d.label) && d.deviceId; })[0];
+        if (b && b.deviceId !== curId){
+          try{
+            var s2 = await openMic(b.deviceId);
             stream.getTracks().forEach(function(x){ x.stop(); });
-            stream = await openMic(b.deviceId);
+            stream = s2;
             $('inputDev').value = b.deviceId;
-          }
+          }catch(_){}
         }
       }
     }catch(e){
@@ -284,7 +298,7 @@ details summary{cursor:pointer;font-weight:600}
 
     var label = (stream.getAudioTracks()[0] || {}).label || '';
     var lat = (ctx.baseLatency || 0) + (ctx.outputLatency || 0);
-    $('micinfo').textContent = 'មីក៖ ' + (label || 'មិនស្គាល់') +
+    $('micinfo').textContent = 'មីក៖ ' + (label || 'មិនស្គាល់') + (isBT(label) ? ' ⚠ មីក Bluetooth (សូមជ្រើស iPhone Microphone ក្នុង Microphone Input)' : '') +
       (lat > 0 ? ' · App latency ≈ ' + Math.round(lat*1000) + 'ms (មិនរួម Bluetooth)' : '');
 
     $('toggle').textContent = 'បញ្ឈប់មីក';
@@ -336,6 +350,24 @@ details summary{cursor:pointer;font-weight:600}
     $('voice').value = $('voice2').value;
     $('voice').dispatchEvent(new Event('input'));
   });
+  // Test Sound: short beep through Web Audio, to hear which speaker the web page uses
+  $('beep').addEventListener('click', function(){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    var ac = ctx, temp = false;
+    if (!ac){ ac = new AC(); temp = true; }
+    try{ ac.resume(); }catch(e){}
+    var o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.value = 523;
+    g.gain.value = 0.0001;
+    o.connect(g); g.connect(ac.destination);
+    var t = ac.currentTime;
+    g.gain.exponentialRampToValueAtTime(0.25, t + 0.04);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+    o.start(t); o.stop(t + 1);
+    if (temp) setTimeout(function(){ try{ ac.close(); }catch(e){} }, 1300);
+    setStatus('ឮសំឡេង "ប៊ីប" ចេញពី Bluetooth speaker ឬអត់?');
+  });
+
   $('inputDev').addEventListener('change', function(){
     if (running) setStatus('ចុច "បញ្ឈប់មីក" រួចចុច "ចាប់ផ្តើមមីក" ម្តងទៀត ដើម្បីប្រើមីកថ្មី។');
   });
