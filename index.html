@@ -634,7 +634,288 @@ details summary{cursor:pointer;font-weight:600}
     }catch(e){}
   }
   function exitFull(){
-    $('videoBox').classList.remove('full');
+    $('videoBox').classList.remo<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>បកប្រែផ្ទាល់ អង់គ្លេស → ខ្មែរ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Khmer:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef2f7;--panel:#fff;--text:#14233a;--muted:#5d6b82;--line:#d8e0eb;--brand:#0b2a6b;--brand-text:#fff;
+  --amber:#f2a900;--live:#d93a3a;--ok:#1f8a5b;--stage:#0b1f4d;--stage2:#0f2a66;--stage-text:#fff;--stage-muted:#a9b8d8;--hl:#e6edf9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1220;--panel:#111c30;--text:#e8eefb;--muted:#93a3bf;
+  --line:#22304a;--brand:#7fa6ff;--brand-text:#0a1220;--hl:#17294a;--stage:#07132e;--stage2:#0b1c42}}
+:root[data-theme="dark"]{--bg:#0a1220;--panel:#111c30;--text:#e8eefb;--muted:#93a3bf;--line:#22304a;--brand:#7fa6ff;
+  --brand-text:#0a1220;--hl:#17294a;--stage:#07132e;--stage2:#0b1c42}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans","Noto Sans Khmer","Khmer UI",system-ui,sans-serif;line-height:1.6}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+h1{margin:0;font-size:19px;font-weight:800}
+h1 span{font-weight:500;color:var(--muted);font-size:14px;margin-left:8px}
+#pill{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--hl);font-size:14px;font-weight:600}
+#dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}
+#pill.live #dot{background:var(--live);animation:blink 1.2s infinite}
+#pill.busy #dot{background:var(--amber)}
+@keyframes blink{50%{opacity:.3}}
+main{max-width:1180px;margin:0 auto;padding:18px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:18px}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.stage{background:linear-gradient(160deg,var(--stage),var(--stage2));color:var(--stage-text);border-radius:16px;padding:28px 24px;min-height:300px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+#km{font-weight:800;line-height:1.75;font-size:var(--fs,38px);overflow-wrap:anywhere}
+#km.empty{font-weight:500;font-size:20px;color:var(--stage-muted)}
+#en{margin-top:14px;color:var(--stage-muted);font-size:17px;min-height:1.6em}
+#en.hide{display:none}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:14px;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+#go{display:flex;align-items:center;gap:10px;padding:12px 24px;border:0;border-radius:999px;background:var(--brand);color:var(--brand-text);font-weight:700;font-size:17px;cursor:pointer}
+#go.on{background:var(--live);color:#fff}
+#go.on svg{animation:blink 1.2s infinite}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.ctl input[type=range]{width:96px;accent-color:var(--brand)}
+.ctl input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand)}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--hl)}
+.chip.ok{color:var(--ok)}
+.chip.no{color:var(--live)}
+details{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+summary{cursor:pointer;font-weight:600}
+.row{display:flex;gap:8px;margin-top:10px}
+.row input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.btn{padding:9px 16px;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:pointer;font-weight:500}
+.btn:hover{background:var(--hl)}
+.video{position:relative;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden;margin-top:10px;display:none}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+aside{background:var(--panel);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;max-height:calc(100vh - 110px);min-height:360px}
+aside .top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+aside h2{margin:0;font-size:16px;font-weight:700}
+#log{flex:1;overflow-y:auto}
+.item{padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.item:hover{background:var(--hl)}
+.item time{font-size:12px;color:var(--muted)}
+.item .k{font-size:17px;font-weight:500;margin:2px 0}
+.item .e{font-size:13px;color:var(--muted)}
+#empty{padding:28px 20px;color:var(--muted);text-align:center;font-size:14px}
+#toast{margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--hl);font-size:14px;display:none}
+.help{font-size:14px;color:var(--muted)}
+.help li{margin:4px 0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>បកប្រែផ្ទាល់<span>English → ខ្មែរ</span></h1>
+  <div id="pill"><i id="dot"></i><span id="state">រួចរាល់</span></div>
+</header>
+<main>
+  <section>
+    <div class="stage" aria-live="polite">
+      <div id="km" class="empty">ចុច “ចាប់ផ្តើម” ហើយចាក់ podcast ជាភាសាអង់គ្លេស</div>
+      <div id="en"></div>
+    </div>
+    <div id="toast" role="status"></div>
+    <div class="bar">
+      <button id="go" aria-label="ចាប់ផ្តើម ឬឈប់ស្តាប់">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.9V22h2v-3.1A8 8 0 0 0 20 11z"/></svg>
+        <span id="golabel">ចាប់ផ្តើម</span>
+      </button>
+      <label class="ctl"><input type="checkbox" id="speak" checked> អានជាសំឡេង</label>
+      <label class="ctl">ល្បឿន <input type="range" id="rate" min="0.7" max="1.4" step="0.1" value="1"></label>
+      <label class="ctl">ទំហំអក្សរ <input type="range" id="size" min="24" max="64" step="2" value="38"></label>
+      <label class="ctl"><input type="checkbox" id="showen" checked> អក្សរអង់គ្លេស</label>
+      <span id="vchip" class="chip">សំឡេងខ្មែរ: កំពុងពិនិត្យ</span>
+    </div>
+    <details>
+      <summary>វីដេអូ YouTube (ជាជម្រើស)</summary>
+      <div class="row"><input id="url" placeholder="បិទភ្ជាប់ link YouTube"><button id="load" class="btn">បើក</button></div>
+      <div class="video" id="video"></div>
+    </details>
+    <details>
+      <summary>ជំនួយ</summary>
+      <ul class="help">
+        <li>ប្រើ Chrome ឬ Edge ហើយអនុញ្ញាតឱ្យប្រើមីក្រូហ្វូន។</li>
+        <li>ចាក់ podcast ពីទូរស័ព្ទ ឬឧបករណ៍ផ្សេង ដាក់ជិតមីក្រូហ្វូន។</li>
+        <li>បើចង់ស្តាប់សំឡេងខ្មែរ សូមពាក់ headphones លើកុំព្យូទ័រនេះ ដើម្បីកុំឱ្យមីក្រូហ្វូនស្តាប់ឮ។</li>
+        <li>ចុចគ្រាប់ចុច Space ដើម្បីចាប់ផ្តើម ឬឈប់។</li>
+      </ul>
+    </details>
+  </section>
+  <aside>
+    <div class="top"><h2>ប្រវត្តិបកប្រែ</h2>
+      <div><button id="save" class="btn" disabled>រក្សាទុក</button> <button id="clear" class="btn">សម្អាត</button></div></div>
+    <div id="log"><div id="empty">ឃ្លាដែលបកប្រែរួចនឹងបង្ហាញនៅទីនេះ។ ចុចលើឃ្លាណាមួយដើម្បីស្តាប់ម្តងទៀត។</div></div>
+  </aside>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, running = false, sample = null, queue = [], busy = false, t0 = 0, entries = [];
+
+function setState(kind, text) {
+  $("state").textContent = text;
+  $("pill").className = kind || "";
+}
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg; t.style.display = msg ? "block" : "none";
+}
+function fmt(ms) {
+  const s = Math.floor(ms / 1000);
+  return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+}
+
+/* ---------- Khmer voice ---------- */
+function khmerVoice() {
+  return window.speechSynthesis ? speechSynthesis.getVoices().find(v => /^km/i.test(v.lang)) || null : null;
+}
+function updateVoiceChip() {
+  const c = $("vchip"), v = khmerVoice();
+  c.className = "chip " + (v ? "ok" : "no");
+  c.textContent = v ? "សំឡេងខ្មែរ: មាន" : "សំឡេងខ្មែរ: មិនមាន";
+}
+if (window.speechSynthesis) speechSynthesis.onvoiceschanged = updateVoiceChip;
+setTimeout(updateVoiceChip, 400);
+
+function speakKhmer(text) {
+  if (!$("speak").checked || !window.speechSynthesis) return;
+  const v = khmerVoice();
+  if (!v) { toast("ឧបករណ៍នេះមិនមានសំឡេងខ្មែរទេ ដូច្នេះបង្ហាញតែអក្សរ។ Windows 11 និង Android ភាគច្រើនមានសំឡេងខ្មែរ។"); return; }
+  if (speechSynthesis.pending) speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.voice = v; u.lang = v.lang; u.rate = parseFloat($("rate").value);
+  speechSynthesis.speak(u);
+}
+
+/* ---------- Translation ---------- */
+async function translate(text) {
+  const prev = entries.slice(-2).map(e => e.en).join(" ");
+  const prompt = "You are a professional live interpreter. Translate the English speech below into natural, spoken Khmer. " +
+    "Keep names and technical terms accurate. Output only the Khmer translation.\n" +
+    (prev ? "Previous context (do not translate): " + prev + "\n" : "") + "\nSpeech: " + text;
+  const r = await sample(prompt, { modelTier: "quick", cache: false });
+  return (r.text || "").trim();
+}
+
+function addEntry(en, km) {
+  const ms = Date.now() - t0;
+  entries.push({ ms, en, km });
+  const e = $("empty"); if (e) e.remove();
+  const d = document.createElement("div");
+  d.className = "item"; d.tabIndex = 0;
+  const t = document.createElement("time"); t.textContent = fmt(ms);
+  const k = document.createElement("div"); k.className = "k"; k.textContent = km;
+  const n = document.createElement("div"); n.className = "e"; n.textContent = en;
+  d.append(t, k, n);
+  d.onclick = () => speakKhmer(km);
+  d.onkeydown = ev => { if (ev.key === "Enter") speakKhmer(km); };
+  $("log").appendChild(d);
+  $("log").scrollTop = $("log").scrollHeight;
+  $("save").disabled = false;
+}
+
+async function pump() {
+  if (busy) return;
+  busy = true;
+  while (queue.length) {
+    const en = queue.shift();
+    setState("busy", "កំពុងបកប្រែ");
+    try {
+      const km = await translate(en);
+      $("km").className = ""; $("km").textContent = km; $("en").textContent = en;
+      addEntry(en, km); speakKhmer(km); toast("");
+    } catch (e) {
+      toast("បកប្រែមិនបាន៖ " + ((e && (e.message || e.code)) || "error"));
+      if (e && e.code === "not_granted") queue = [];
+    }
+  }
+  busy = false;
+  if (running) setState("live", "កំពុងស្តាប់");
+}
+
+/* ---------- Listening ---------- */
+async function start() {
+  if (!SR) { toast("Browser នេះមិនគាំទ្រការស្តាប់សំឡេងទេ។ សូមប្រើ Chrome ឬ Edge។"); return; }
+  if (!sample) {
+    sample = await claude.use("sample");
+    if (!sample) { toast("មុខងារបកប្រែមិនអាចប្រើបានទេ។ សូមបើកទំព័រនេះក្នុង claude.ai។"); return; }
+  }
+  try { await sample("OK", { modelTier: "quick", cache: false }); }
+  catch (e) { toast("ត្រូវការការអនុញ្ញាតដើម្បីប្រើ Claude សម្រាប់បកប្រែ។"); return; }
+
+  rec = new SR();
+  rec.lang = "en-US"; rec.continuous = true; rec.interimResults = true;
+  rec.onresult = e => {
+    if (window.speechSynthesis && speechSynthesis.speaking) return; // ignore our own Khmer voice
+    let interim = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const r = e.results[i];
+      if (r.isFinal) { const t = r[0].transcript.trim(); if (t) { queue.push(t); pump(); } }
+      else interim += r[0].transcript;
+    }
+    if (interim) $("en").textContent = interim;
+  };
+  rec.onerror = e => {
+    if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+      stop(); toast("មិនអាចប្រើមីក្រូហ្វូនបានទេ។ សូមអនុញ្ញាតមីក្រូហ្វូន ឬបើកទំព័រនេះក្នុងផ្ទាំងដាច់ដោយឡែក។");
+    } else if (e.error !== "no-speech" && e.error !== "aborted") toast("កំហុសការស្តាប់៖ " + e.error);
+  };
+  rec.onend = () => { if (running) { try { rec.start(); } catch (_) {} } };
+  running = true; t0 = t0 || Date.now(); toast("");
+  $("go").classList.add("on"); $("golabel").textContent = "ឈប់";
+  setState("live", "កំពុងស្តាប់");
+  try { rec.start(); } catch (_) {}
+}
+function stop() {
+  running = false;
+  if (rec) rec.stop();
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  $("go").classList.remove("on"); $("golabel").textContent = "ចាប់ផ្តើម";
+  setState("", "បានឈប់");
+}
+$("go").onclick = () => running ? stop() : start();
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" && !/INPUT|SELECT|BUTTON|SUMMARY/.test(document.activeElement.tagName)) { e.preventDefault(); $("go").click(); }
+});
+
+/* ---------- Controls ---------- */
+$("size").oninput = () => document.documentElement.style.setProperty("--fs", $("size").value + "px");
+$("showen").onchange = () => $("en").classList.toggle("hide", !$("showen").checked);
+$("clear").onclick = () => {
+  queue = []; entries = []; t0 = running ? Date.now() : 0;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  $("log").innerHTML = '<div id="empty">ឃ្លាដែលបកប្រែរួចនឹងបង្ហាញនៅទីនេះ។ ចុចលើឃ្លាណាមួយដើម្បីស្តាប់ម្តងទៀត។</div>';
+  $("km").className = "empty"; $("km").textContent = "ចុច “ចាប់ផ្តើម” ហើយចាក់ podcast ជាភាសាអង់គ្លេស";
+  $("en").textContent = ""; $("save").disabled = true;
+};
+$("save").onclick = async () => {
+  const dl = await claude.use("downloads");
+  if (!dl) { toast("មិនអាចរក្សាទុកក្នុងទិដ្ឋភាពនេះបានទេ។"); return; }
+  const text = entries.map(e => "[" + fmt(e.ms) + "] " + e.km + "\n" + e.en).join("\n\n");
+  try { await dl.save({ filename: "khmer-translation.txt", data: new Blob([text], { type: "text/plain" }) }); }
+  catch (e) { if (e && e.code !== "declined") toast("រក្សាទុកមិនបាន។"); }
+};
+
+/* ---------- Video ---------- */
+function parseId(u) {
+  const m = u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+$("load").onclick = () => {
+  const id = parseId($("url").value.trim());
+  if (!id) { toast("Link មិនត្រឹមត្រូវ។"); return; }
+  const box = $("video"); box.style.display = "block"; box.innerHTML = "";
+  const f = document.createElement("iframe");
+  f.src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0";
+  f.allow = "autoplay; encrypted-media; fullscreen"; f.allowFullscreen = true;
+  box.appendChild(f);
+  toast("បើវីដេអូមិនបង្ហាញ សូមចាក់វានៅផ្ទាំងផ្សេង ហើយប្រើទំព័រនេះសម្រាប់បកប្រែ។");
+};
+</script>
+</body>
+</html>
+ve('full');
     document.body.style.overflow = '';
     try{
       if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
